@@ -3,6 +3,7 @@
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -40,6 +41,7 @@ import okhttp3.Headers;
      RecyclerView rvTweets;
      List<Tweet> tweets;
      TweetsAdapter adapter;
+     MenuItem miActionProgressItem;
 
      private final int REQUEST_CODE = 20;
 
@@ -57,6 +59,12 @@ import okhttp3.Headers;
 
          rvTweets.setLayoutManager(new LinearLayoutManager(this));
          rvTweets.setAdapter(adapter);
+
+         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvTweets.getContext(),
+                 layoutManager.getOrientation());
+         rvTweets.addItemDecoration(dividerItemDecoration);
 
          populateHomeTimeline();
 
@@ -108,26 +116,33 @@ import okhttp3.Headers;
          super.onActivityResult(requestCode, resultCode, data);
      }
 
-     private void populateHomeTimeline() {
+     private void populateHomeTimeline () {
          client.getHomeTimeline(new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Headers headers, JSON json) {
-                    Log.i(TAG, "OnSuccess!");
+                    Log.i(TAG, "OnSuccess!"+json.toString());
                     JSONArray jsonArray = json.jsonArray;
+
+                    miActionProgressItem.setVisible(true);
+
                     try {
                         tweets.addAll(Tweet.fromJsonArray(jsonArray));
                         adapter.notifyDataSetChanged();
+                        miActionProgressItem.setVisible(false);
 
                     } catch (JSONException e) {
                         Log.e(TAG, "Json exception", e);
                         e.printStackTrace();
+
                     }
 
                 }
 
                 @Override
                 public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                    Log.e(TAG, "OnFailure!", throwable);
+                    Log.e(TAG, "OnFailure!"+ response, throwable);
+
+
                 }
             }
          );
@@ -171,4 +186,15 @@ import okhttp3.Headers;
              }
          });
      }
+
+         @Override
+         public boolean onPrepareOptionsMenu(Menu menu) {
+             // Store instance of the menu item containing progress
+             miActionProgressItem = menu.findItem(R.id.miActionProgress);
+
+             // Return to finish
+             return super.onPrepareOptionsMenu(menu);
+
+     }
+
  }

@@ -37,7 +37,9 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
+        android:background="@drawable/rounded_corner"
         android:text="@string/tweet"
-    tools:ignore="NotSibling" />
+        android:textColor="@android:color/white"
+        tools:ignore="NotSibling" />
 </RelativeLayout
    >

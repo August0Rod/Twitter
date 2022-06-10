@@ -8,7 +8,6 @@
     tools:context=".TimelineActivity">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,15 +25,17 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
-    <Button
+    <ImageButton
         android:id="@+id/rlButton"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_width="69dp"
+        android:layout_height="68dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
+        android:background="@drawable/rounded_corner"
         android:onClick="onLogoutButton"
+        android:src="@drawable/ic_vector_close"
         android:text="Logout" />
 
 
